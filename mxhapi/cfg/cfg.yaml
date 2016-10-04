@@ -1,0 +1,33 @@
+environment:
+  mxhdev:
+    name: Mxhero Dev
+    db_name: mxhero
+    db_user: mxhero
+    db_pass: mxhero
+    db_host: localhost
+    db_port: 3306
+logger:
+  version: 1
+  disable_existing_loggers: false
+  formatters:
+    simple:
+      format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  handlers:
+    console:
+      class: logging.StreamHandler
+      formatter: simple
+      stream: ext://sys.stdout
+    prod_file_handler:
+      class: logging.handlers.RotatingFileHandler
+      formatter: simple
+      filename: /opt/mxhapi/log/mxhero-api.log
+      maxBytes: 104857600 # 100MB
+      backupCount: 1
+      encoding: utf8
+  loggers:
+    __main__:
+      level: DEBUG
+      handlers: [console]
+  root:
+    level: DEBUG
+    handlers: [console]

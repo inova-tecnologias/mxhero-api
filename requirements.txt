@@ -1,0 +1,6 @@
+Flask-MySQLdb
+Flask
+flask-restful
+PyYAML
+requests
+marshmallow

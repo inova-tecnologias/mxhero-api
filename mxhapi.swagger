@@ -1,0 +1,193 @@
+swagger: '2.0'
+info:
+  version: v1
+  title: mxHero API
+  description: For management of mxHero installations.
+host: api.cainelli.ninja
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  '/mxhero/{mxhName}':
+    get:
+      summary: Extension for mxHero.
+      description: |
+        Endpoint for retrieve mxHero data.
+      parameters:
+        - name: mxhName
+          in: path
+          description: Environment name.
+          type: string
+          required: true
+      responses:
+        '200':
+          description: Sucessful
+          schema:
+            type: object
+            properties:
+              db_host:
+                type: string
+              name:
+                type: string
+        '404':
+          description: Not found.
+          schema:
+            $ref: '#/definitions/DefaultError'
+  '/mxhero/{mxhName}/domain/{domain}':
+    get:
+      summary: Get mxHero domains.
+      description: |
+        Endpoint for manage mxhero domains. You can get information of domains.
+      parameters:
+        - name: mxhName
+          in: path
+          description: Environment name.
+          type: string
+          required: true
+        - name: domain
+          in: path
+          description: Domain to retrieve info.
+          type: string
+          required: true
+      responses:
+        '200':
+          description: Sucessful
+          schema:
+            $ref: '#/definitions/GetDomainResponse'
+        '404':
+          description: Not found.
+          schema:
+            $ref: '#/definitions/DefaultError'
+    put:
+      description: Creates mxhero domains.
+      parameters:
+        - name: mxhName
+          in: path
+          description: Environment name.
+          type: string
+          required: true
+        - name: domain
+          in: path
+          description: Domain to create.
+          type: string
+          required: true
+        - name: body
+          required: true
+          in: body
+          description: Body object
+          schema:
+           $ref: '#/definitions/CreateDomainSchema'
+      responses:
+        '201':
+          description: Sucessful
+          schema:
+            $ref: '#/definitions/CreateDomainResponse'
+        '501':
+          description: Unexpected error.
+          schema:
+            $ref: '#/definitions/DefaultError'
+    delete:
+      summary: Delete mxHero domains.
+      description: |
+        Endpoint for delete mxhero domains.
+      parameters:
+        - name: mxhName
+          in: path
+          description: Environment name.
+          type: string
+          required: true
+        - name: domain
+          in: path
+          description: Domain to retrieve info.
+          type: string
+          required: true
+      responses:
+        '200':
+          description: Sucessful
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        default:
+          description: Unexpected error.
+          schema:
+            $ref: '#/definitions/DefaultError'
+definitions:
+  DefaultResponse:
+    type: object
+    properties:
+      message:
+        type: string
+  DefaultError:
+    type: object
+    properties:
+      message:
+        type: string
+  GetDomainResponse:
+    type: object
+    properties:
+      address:
+        type: string
+      allowed_ip_masks:
+        type: string
+      allowed_transport_agents:
+        type: string
+      base:
+        type: string
+      cos:
+        type: string
+      creation:
+        type: string
+      direction_type:
+        type: string
+      domain:
+        type: string
+      next_update:
+        type: string
+      override_flag:
+        type: string
+      port:
+        type: string
+      server:
+        type: string
+      updated:
+        type: string
+      user:
+        type: string
+  CreateDomainSchema:
+    type: object
+    properties:
+      inbound_server:
+        type: string
+        description: '[required] Inbound mail server.'
+      default_rules:
+        type: boolean
+        description: 'Reather apply or not default rules on creation.'
+      directory_type:
+        type: string
+        description: '[required] Directory Type [zimbra|ad]'
+      adsync_host:
+        description: '[required] Ldap host for sync users.'
+        type: string
+      adsync_port:
+        type: string
+        description: '[required] Ldap Port.'
+      adsync_user:
+        type: string
+        description: '[required] Ldap User.'
+      adsync_pass:
+        type: string
+        description: '[required] Ldap Password.'
+      admin_email:
+        type: string
+        description: '[required] mxHero domain admin email.'
+  CreateDomainResponse:
+    type: object
+    properties:
+      message:
+        type: string
+      username:
+        type: string
+        description: 'admin user name for the new domain.'
+      password: 
+        type: string
+        description: 'admin users password.'

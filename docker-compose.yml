@@ -1,0 +1,10 @@
+app:  
+  build: .
+  ports:
+    - "80:80"
+  volumes:
+    - ./mxhapi/:/opt/mxhapi
+  environment:
+    - CONFIG_FILE=/opt/mxhapi/cfg/cfg.yaml
+    - VERSION=v1
+    - PYTHONPATH=/opt
